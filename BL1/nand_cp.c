@@ -77,7 +77,7 @@ typedef unsigned long		ulong;
 #include "s5pv210.h"
 //#define	COPY_BL2_SIZE		882046
 //#define CONFIG_SYS_TEXT_BASE 0x22000000
-//#define DEBUG
+#define DEBUG
 #ifdef  DEBUG  
 #define debug(fmt,args...)  printf (fmt ,##args)  
 #define debugX(level,fmt,args...) if (DEBUG>=level) printf(fmt,##args);  
@@ -456,6 +456,11 @@ int copy_uboot_to_ram_nand (void)
 		large_block = 3;
 		debug("2GB(MLC2) ");
 	}
+        else if(0xECD79476 == id)
+        {
+                large_block = 3;
+                debug("4GB(MLC2) ");
+        }
 	else
 		printf("NandFlash Unsupportedi\r\n");
 	debug("ID:%x\n\r", id);
