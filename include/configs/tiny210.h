@@ -481,9 +481,18 @@
 #define NAND_DISABLE_CE()       (NFCONT_REG |= (1 << 1))
 #define NAND_ENABLE_CE()        (NFCONT_REG &= ~(1 << 1))
 #define NF_TRANSRnB()           do { while(!(NFSTAT_REG & (1 << 0))); } while(0)
-/*
-#define CONFIG_CMD_NAND_YAFFS_SKIPFB
-*/
+
+/*Nand MTD Parts*/
+#define CONFIG_MTD_PARTITIONS
+#define MTDIDS_DEFAULT          "nand0=nandflash0"
+#define MTDPARTS_DEFAULT            "mtdparts=nandflash0:4M@0(bootloader)," \
+                                    "15M(kernel)," \
+                                    "30M(yaffs2)," \
+                                    "-(user)"
+#define CONFIG_EXTRA_ENV_SETTINGS       "mtdid=" MTDIDS_DEFAULT "\0"            \
+                                        "mtdparts=" MTDPARTS_DEFAULT "\0"
+
+
 #define CONFIG_NAND_USE_CHIP_NAME 1
 #undef  CFG_NAND_FLASH_BBT
 #define CFG_NAND_HWECC 1
