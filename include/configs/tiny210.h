@@ -498,4 +498,10 @@
 /*if enable CONFIG_DNW_MENU_AUTORUN , will run cmd "menu" when boot from sd*/
 /*#define CONFIG_DNW_MENU_AUTORUN 1 */
 
+/*for LCD*/
+#define CONFIG_VIDEO_S5PV210 
+#define CONFIG_SYS_DEFAULT_VIDEO_MODE 0x314
+#define LCD_VIDEO_ADDR        (0x48000000)    //根据开发板的内存地址配置
+#define CONFIG_SYS_VIDEO_VCLOCK_HZ     (133000000)
+
 #endif	/* __CONFIG_H */

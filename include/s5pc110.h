@@ -48,6 +48,14 @@ typedef enum {
 #include <s5pc11x.h>
 #endif
 
+/* S5PC110 device base addresses */
+#define ELFIN_DMA_BASE     0xE0900000
+#define ELFIN_LCD_BASE     0xF8000000
+#define ELFIN_FB_BASE      0xF8000000 
+
+
+
+
 #define BIT0 				0x00000001
 #define BIT1 				0x00000002
 #define BIT2 				0x00000004
@@ -681,6 +689,10 @@ typedef enum {
 #define GPG3DRV				(ELFIN_GPIO_BASE + GPG3DRV_SR_OFFSET)
 #define GPG3CONPDN			(ELFIN_GPIO_BASE + GPG3CONPDN_OFFSET)
 #define GPG3PUDPDN			(ELFIN_GPIO_BASE + GPG3PUDPDN_OFFSET)
+#define GPH0CON				(ELFIN_GPIO_BASE + GPH0CON_OFFSET)
+#define GPH0PUD				(ELFIN_GPIO_BASE + GPH0PUD_OFFSET)
+#define GPH0DRV				(ELFIN_GPIO_BASE + GPH0DRV_OFFSET)
+#define GPH0DAT				(ELFIN_GPIO_BASE + GPH0DAT_OFFSET)
 #define GPICON				(ELFIN_GPIO_BASE + GPICON_OFFSET)
 #define GPIPUD				(ELFIN_GPIO_BASE + GPIPUD_OFFSET)
 #define GPIDRV				(ELFIN_GPIO_BASE + GPIDRV_OFFSET_SR)
@@ -1770,6 +1782,13 @@ typedef enum {
 
 /* include common stuff */
 #ifndef __ASSEMBLY__
+
+static inline S5PC11X_FB *S5PC11X_GetBase_FB(void)
+{
+	return (S5PC11X_LCD *)(ELFIN_FB_BASE);
+}
+
+
 static inline S5PC11X_MEMCTL * S5PC11X_GetBase_MEMCTL(void)
 {
 	return (S5PC11X_MEMCTL *)(APB_DMC_0_BASE);

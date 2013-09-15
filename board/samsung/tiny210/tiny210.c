@@ -38,6 +38,10 @@
 //#include <drivers/net/dm9000x.h>
 #include <netdev.h>
 
+/*Add by kangear for LCD driver*/
+#include <video_fb.h>
+#include <asm/arch/regs-fb.h>
+
 /* ------------------------------------------------------------------------- */
 #define SMC9115_Tacs	(0x0)	// 0clk		address set-up
 #define SMC9115_Tcos	(0x4)	// 4clk		chip selection set-up
@@ -163,10 +167,66 @@ int board_init(void)
 	/***Modified by lk ***/
 
 	//smc9115_pre_init();
-        pwm_pre_init();
+        //pwm_pre_init();
 
 #ifdef CONFIG_DRIVER_DM9000
 	dm9000_pre_init();
+#endif
+
+#ifdef CONFIG_VIDEO_S5PV210
+	writel(0x10000000, GPBCON);     //GPBCON [31:28]:output [27:0]:input
+	writel(0x1555, GPBPUD);//GPBPUD GPBPUD[7]:Pull-up/ down disabled GPBPUD[6:0]:Pull-down enabled
+	writel(0xc000, GPBDRV_SR);//GPBDRV GPBDRV[7]:4x  GPBDRV[6:0]:1x
+	writel(0x10010000, GPBCON);//GPBCON [31:28],[19:16]:output [27:20],[15:0]:input
+	writel(0x1455, GPBPUD);//GPBPUD GPBPUD[7],[4]:Pull-up/ down disabled ,GPBPUD[6:5][3:0]:Pull-down enabled
+	writel(0xc300, GPBDRV_SR);//GPBDRV GPBDRV[7],[4]:4x  GPBDRV[6:5][3:0]:1x
+	writel(0x10110000, GPBCON);//GPBCON [31:28],[23:20],[19:16]:output [27:24],[15:0]:input
+	writel(0x1055, GPBPUD);//GPBPUD GPBPUD[7],[5][4]:Pull-up/ down disabled ,GPBPUD[6][3:0]:Pull-down enabled
+	writel(0xcf00, GPBDRV_SR);//GPBDRV GPBDRV[7],[5],[4]:4x  GPBDRV[6][3:0]:1x
+	writel(0x1, GPD1CON);//GPD1CON [23:4]:input [3:0]:output
+	writel(0x54, GPD1PUD);//GPD1PUD GPD1PUD[5:4],[0]:Pull-up/ down disabled ,GPBPUD[3:1]:Pull-down enabled
+	writel(0x3, GPD1DRV);//GPD1DRV GPD1DRV[0]:4x  GPBDRV[5:1]:1x
+	writel(0x11, GPD1CON);//GPD1CON [23:8]:input [7:0]:output
+	writel(0x50, GPD1PUD);//GPD1PUD GPD1PUD[5:4],[1:0]:Pull-up/ down disabled ,GPBPUD[3:2]:Pull-down enabled
+	writel(0xf, GPD1DRV);//GPD1DRV GPD1DRV[1:0]:4x  GPBDRV[5:2]:1x
+	writel(0x1001, GPD0CON);//GPD0CON GPD0CON[3]，[0]:output GPD0CON[2:1]:input  
+	writel(0x15, GPD0PUD);//GPD0PUD GPD0PUD[3]:Pull-up/ down disabled,GPD0PUD[2:0]:Pull-down enabled
+	writel(0xc0, GPD0DRV);//GPD0DRV GPD0DRV[3]:4x,GPD0DRV[2:0]:1x
+	writel(0x1000010, GPH0CON);// GPH0CON GPH0CON[6],[1]:output,GPH0CON[7],[5:2],[0]:input  
+	writel(0x4455, GPH0PUD);// GPH0PUD GPH0PUD[6],[4]:Pull-up/ down disabled GPH0PUD[7],[5],[4:0]:Pull-down enabled
+	writel(0x3000, GPH0DRV);// GPH0DRV GPH0DRV[6]:4x GPH0DRV[7],[5:0]:1x
+	writel(0x11110000, GPBCON);//GPBCON [31:16]:output [15:0]:input
+	writel(0x55, GPBPUD);//GPBPUD GPBPUD[7:4]:Pull-up/ down disabled GPBPUD[3:0]:Pull-down enabled
+	writel(0xff00, GPBDRV_SR);//GPBDRV GPBDRV[7:4]:4x  GPBDRV[3:0]:1x
+	writel(0x11110100, GPBCON);//GPBCON [31:16],[11:8]:output [15:12],[7:0]:input
+	writel(0x55, GPBPUD);//GPBPUD GPBPUD[7:4]:Pull-up/ down disabled GPBPUD[3:0]:Pull-down enabled
+	writel(0xff00, GPBDRV_SR);//GPBDRV GPBDRV[7:4]:4x  GPBDRV[3:0]:1x
+	writel(0x80, GPBDAT);//GPBDAT GPBDAT[7]=1,GPBDAT[6:0]=0  
+	writel(0x98, GPBDAT);//GPBDAT GPBDAT[7],[4:3]=1,GPBDAT[6:5],[2:0]=0
+	writel(0xb9, GPBDAT);//GPBDAT GPBDAT[7],[5:3],[0]=1,GPBDAT[6],[2:1]=0
+	writel(0xbb, GPBDAT);//GPBDAT GPBDAT[7],[5:3],[1:0]=1,GPBDAT[6],[2]=0
+	writel(0xbb, GPBDAT);//GPBDAT GPBDAT[7],[5:3],[1:0]=1,GPBDAT[6],[2]=0
+	writel(0xd, GPD0DAT);//GPD0DAT GPD0DAT[3:2],[0]=1,GPD0DAT[1]=0  
+	writel(0xd1, GPH0DAT);//GPH0DAT[7:6],[4],[0]=1,GPH0DAT[5],[3:1]=0  
+	writel(0xfb, GPBDAT);//GPBDAT GPBDAT[7:3],[1:0]=1,GPBDAT[2]=0
+	writel(0xff, GPBDAT);//GPBDAT GPBDAT[7:0]=1
+	writel(0x91, GPH0DAT);//GPH0DAT[7],[4],[0]=1,GPH0DAT[6:5],[3:1]=0
+	writel(0xd1, GPH0DAT);//GPH0DAT[7:6],[4],[0]=1,GPH0DAT[5],[3:1]=0
+	writel(0xd3, GPH0DAT);//GPH0DAT[7:6],[4],[1:0]=1,GPH0DAT[5],[3:2]=0
+
+	writel(0x22222222, GPF0CON);    //GPF0CON set GPF0[0:7] as HSYNC,VSYNC,VDEN,VCLK,VD[0:3]
+	writel(0x0, GPF0PUD);      //GPF0PUD set pull-up,down disable
+	writel(0x22222222, GPF1CON);    //set GPF1CON[7:0] as VD[11:4]
+	writel(0x0, GPF1PUD);      //GPF1PUD set pull-up,down disable
+	writel(0x22222222, GPF2CON);    //set GPF2CON[7:0] as VD[19:12]
+	writel(0x0, GPF2PUD);      //GPF2PUD set pull-up,down disable
+	writel(0x00002222, GPF3CON);    //set GPF3CON[3:0] as VD[23:20]
+	writel(0x0, GPF3PUD);      //GPF3PUD set pull-up,down disable
+	//--------- S5PC110 EVT0 needs MAX drive strength---------//
+	writel(0xffffffff, GPF0DRV);    //set GPF0DRV drive strength max by WJ.KIM(09.07.17)
+	writel(0xffffffff, GPF1DRV);    //set GPF1DRV drive strength max by WJ.KIM(09.07.17)
+	writel(0xffffffff, GPF2DRV);    //set GPF2DRV drive strength max by WJ.KIM(09.07.17)
+	writel(0x3ff, GPF3DRV);     //set GPF3DRV drive strength max by WJ.KIM(09.07.17)
 #endif
 
 	gd->bd->bi_arch_number = CONFIG_MACH_TYPE;
@@ -174,6 +234,21 @@ int board_init(void)
 
 	return 0;
 }
+
+void board_video_init(GraphicDevice *pGD) 
+{
+	//DISPLAY_CONTROL_REG = 0x2; //DISPLAY_CONTROL output path RGB=FIMD I80=FIMD ITU=FIMD
+	*(volatile unsigned long *)(0xE0107008) = 0x2;
+	
+	//CLK_SRC1_REG = 0x700000;  //CLK_SRC1 fimdclk = EPLL
+	*(volatile unsigned long *)(0xE0100204) = 0x700000;
+} 
+void board_video_reset()
+{
+	S5PC11X_FB * const fb = S5PC11X_GetBase_FB();
+	fb->WINCON1 &= ~(S3C_WINCON_BPPMODE_16BPP_565 | S3C_WINCON_ENWIN_ENABLE |
+	S3C_WINCON_HAWSWP_ENABLE);
+} 
 
 int dram_init(void)
 {
