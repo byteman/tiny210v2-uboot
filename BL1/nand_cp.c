@@ -459,6 +459,7 @@ int copy_uboot_to_ram_nand (void)
 	else
 		printf("NandFlash Unsupportedi\r\n");
 	debug("ID:%x\n\r", id);
+	debug("copy size:%x\n\r", COPY_BL2_SIZE);
 	/* read NAND Block.
 	 * 128KB ->240KB because of U-Boot size increase. by scsuh
 	 * So, read 0x3c000 bytes not 0x20000(128KB).

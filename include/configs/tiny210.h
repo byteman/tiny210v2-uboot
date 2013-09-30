@@ -28,7 +28,7 @@
 
 #ifndef __CONFIG_H
 #define __CONFIG_H
-
+//#define DEBUG 1
 /* High Level Configuration Options */
 #define CONFIG_SAMSUNG			1	/* SAMSUNG core*/
 #define CONFIG_S5P			1	/* S5P Family */
@@ -176,6 +176,7 @@
 #undef CONFIG_CMD_IMLS
 #define CONFIG_IDENT_STRING	" for TINY210(Nand:K9GAG08U0F)"
 
+#if 0
 #define CONFIG_ENV_IS_IN_MMC		1
 #define CONFIG_SYS_MMC_ENV_DEV		0
 #define CONFIG_ENV_SIZE		0x4000	/* 16KB */
@@ -183,6 +184,17 @@
 #define BL1_SIZE                        (8 << 10) /*8 K reserved for BL1*/
 #define CONFIG_ENV_OFFSET               (RESERVE_BLOCK_SIZE + BL1_SIZE + ((16 + 512) * 1024))
 #define CONFIG_DOS_PARTITION		1
+#endif
+
+#define CONFIG_S5PC11X
+#define CONFIG_ENV_IS_IN_NAND            1
+#define CONFIG_ENV_SIZE         0x4000  /* 16KB */
+#define RESERVE_BLOCK_SIZE              (2048)
+#define BL1_SIZE                        (8 << 10) /*8 K reserved for BL1*/
+#define CONFIG_ENV_OFFSET               0x60000
+//#define CFG_NAND_HWECC
+//#define CONFIG_NAND_BL1_8BIT_ECC
+//#define CONFIG_8BIT_HW_ECC_SLC      1
 
 #if 0
 //#define CONFIG_CLK_667_166_166_133
@@ -417,7 +429,7 @@
 #endif
 /****************************/
 
-
+#if 1 
 /* Fastboot variables */
 #define CONFIG_FASTBOOT		1
 #define CFG_FASTBOOT_TRANSFER_BUFFER		(0x21000000)
@@ -432,6 +444,7 @@
 #define CFG_FASTBOOT_NANDBSP
 //#define CFG_FASTBOOT_SDMMCBSP
 
+#endif
 /* LCD setting */
 //#define CFG_LCD_TL2796		// for C110 - narrow LCD
 //#define CFG_LCD_NONAME1			// for V210 - wide LCD
@@ -441,7 +454,7 @@
 #if defined(CFG_FASTBOOT_NANDBSP)
 
 #ifdef CONFIG_TINY210
-#define CONFIG_BOOTCOMMAND	"nand read C0008000 100000 500000; bootm C0008000"
+#define CONFIG_BOOTCOMMAND	"nand read 21000000 400000 500000; bootm 21000000"
 #elif defined(CONFIG_ANDROID_FORLINX)
 #define CONFIG_BOOTCOMMAND	"nand read C0008000 600000 500000; bootm C0008000"
 #endif
@@ -459,10 +472,10 @@
 /***Modified by lk ***/
 #define CONFIG_ETHADDR		00:40:5c:26:0a:5b
 #define CONFIG_NETMASK          255.255.255.0
-#define CONFIG_IPADDR		192.168.1.230
-#define CONFIG_SERVERIP		192.168.1.229
-#define CONFIG_GATEWAYIP	192.168.1.1
-
+#define CONFIG_IPADDR		192.168.50.127
+#define CONFIG_SERVERIP		192.168.50.87
+#define CONFIG_GATEWAYIP	192.168.51.1
+#define CONFIG_ARP_TIMEOUT 50000U
 
 /*add by kangear
 #define CONFIG_NAND 1
